@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  session-sync:
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python shared/restore-cc-sessions.py --selftest
+
+  shell:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: bash -n
+        run: for f in install.sh uninstall.sh macos/*.sh; do bash -n "$f"; done
+      - name: shellcheck
+        run: shellcheck -S error install.sh uninstall.sh macos/*.sh
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Parse PowerShell scripts
+        shell: powershell
+        run: |
+          $bad = 0
+          Get-ChildItem -Recurse -Filter *.ps1 | ForEach-Object {
+            $e = $null
+            [void][System.Management.Automation.Language.Parser]::ParseFile($_.FullName, [ref]$null, [ref]$e)
+            if ($e) { $bad++; $e | ForEach-Object { Write-Host "$($_.Extent.File):$($_.Extent.StartLineNumber) $($_.Message)" } }
+          }
+          if ($bad) { exit 1 }
+      - name: Compile link router
+        shell: powershell
+        run: |
+          & "$env:windir\Microsoft.NET\Framework64\v4.0.30319\csc.exe" /nologo /target:winexe /r:System.Management.dll /out:router.exe windows\claude-link-router.cs
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+      - name: Build icons
+        shell: powershell
+        run: |
+          .\windows\make-icons.ps1 -Out "$env:RUNNER_TEMP\icons"
+          $n = (Get-ChildItem "$env:RUNNER_TEMP\icons" -Filter *.ico).Count
+          if ($n -ne 9) { Write-Host "expected 9 icons, got $n"; exit 1 }
