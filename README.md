@@ -1,5 +1,7 @@
 # Multiple-Claude
 
+**English** | [简体中文](languages/zh-CN/README.md) | [Tiếng Việt](languages/vi/README.md) | [한국어](languages/ko/README.md)
+
 Run several Claude Desktop apps side by side, each signed in to its own account, on **macOS** and **Windows**.
 
 > Unofficial community tool. Not affiliated with or endorsed by Anthropic. See [Disclaimer](#disclaimer).
@@ -100,6 +102,7 @@ shared/        restore-cc-sessions.py (session sync, both OS)
 macos/         clone builder, link router, session sync hook
 windows/       config, app-copy builder, icon tools, link router (C#), refresh task script
 docs/          how-it-works.md
+languages/     translated README and docs (zh-CN, vi, ko)
 ```
 
 ## Development
@@ -122,13 +125,3 @@ Multiple-Claude is not affiliated with, endorsed by or supported by Anthropic. "
 ## License
 
 [MIT](LICENSE)
-
----
-
-## Tiếng Việt
-
-Multiple-Claude chạy nhiều app Claude Desktop cùng lúc, mỗi app một tài khoản riêng, trên macOS và Windows. Mỗi instance có màu riêng, các app dùng chung session Claude Code, và link `claude://` (đăng nhập MCP, magic link) quay về đúng app bạn đang dùng.
-
-- **macOS**: `bash install.sh` (thêm số để tạo thêm instance, ví dụ `bash install.sh 4 5`).
-- **Windows**: bấm đúp `install.cmd`. Làm một lần: trong Settings > Default apps > Choose default apps by protocol, chọn **Claude Link Router** cho CLAUDE.
-- **Gỡ**: `bash uninstall.sh` / `uninstall.ps1`. Dữ liệu đăng nhập được giữ lại, trừ khi bạn thêm `--purge` / `-Purge`.
