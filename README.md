@@ -26,8 +26,8 @@ Run several Claude Desktop apps side by side, each signed in to its own account,
 ### macOS
 
 ```bash
-git clone https://github.com/dris1153/Multiple-Claude.git
-cd Multiple-Claude
+git clone https://github.com/dris1153/multiple-claude.git
+cd multiple-claude
 bash install.sh          # builds Claude 2 and Claude 3
 bash install.sh 4 5      # more instances
 ```
@@ -37,8 +37,8 @@ Open **Claude 2** from `/Applications` or Launchpad and sign in.
 ### Windows
 
 ```powershell
-git clone https://github.com/dris1153/Multiple-Claude.git
-cd Multiple-Claude
+git clone https://github.com/dris1153/multiple-claude.git
+cd multiple-claude
 .\install.cmd            # or double-click install.cmd; builds Claude 2 and Claude 3
 .\install.cmd 4 5        # more instances
 ```
